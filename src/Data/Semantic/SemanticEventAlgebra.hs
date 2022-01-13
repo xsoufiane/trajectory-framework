@@ -5,10 +5,10 @@ module Data.Semantic.SemanticEventAlgebra
     (
       -- * Types
       SemanticEvent
-      
+
       -- * Constructors
-    , annotate
-    
+    , enrich
+
       -- * Observations
     , semanticAnnotation
     , observables
@@ -16,19 +16,19 @@ module Data.Semantic.SemanticEventAlgebra
     ) where
 
 import Data.HList (HList)
- 
-import Data.Event (Event)  
+
+import Data.EventAlgebra (Event)
 import Data.Semantic.SemanticAnnotation (SemanticAnnotation)
-import Data.Time (Time)  
+import Data.Time (Time)
 
 ------------------------------------------------
 
 class (SemanticAnnotation s, Time t) => SemanticEventAlgebra l s t where
     data SemanticEvent l s t
-    
+
     -- | Constructors
-    annotate :: s -> Event l t -> SemanticEvent l s t
-    
+    enrich :: s -> Event l t -> SemanticEvent l s t
+
     -- | Observations
     semanticAnnotation :: SemanticEvent l s t -> s
     observables :: SemanticEvent l s t -> HList l

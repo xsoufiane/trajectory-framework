@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -fno-warn-redundant-constraints #-}
+
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -5,14 +7,17 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Data.Event
+module Data.EventAlgebra
     (
       -- * Types
       Event
     , EventAlgebra
       
+      -- * Constructors
+    , construct
+      
       -- * Observations
-    ,  observables
+    , observables
     , time
     ) where
 
@@ -27,10 +32,14 @@ class HObservable (l :: [Type])
 instance (Observable o, HObservable l) => HObservable (o ': l)
 instance {-# OVERLAPPING #-} Observable o => HObservable (o ': '[])
 
--- | observations
+-- | Algebra
 class (HObservable l, Time t) => EventAlgebra (l :: [Type]) t where
     data Event l t
-
+    
+    -- | Constructors
+    construct :: HList l -> t -> Event l t
+    
+    -- | Observations
     observables :: Event l t -> HList l
     time :: Event l t -> t
   

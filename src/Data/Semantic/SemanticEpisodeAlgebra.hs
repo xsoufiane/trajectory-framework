@@ -1,3 +1,5 @@
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
 
@@ -5,20 +7,37 @@ module Data.Semantic.SemanticEpisodeAlgebra
     (
       -- * Types
       SemanticEpisode
+    
+      -- * Constructors
+    , construct
+    , enrich
       
       -- * Observations
+    , annotation
+    , elements
     , semanticAnnotation
-    , events
     ) where
 
-import Data.Event (Event)
+import Data.Annotation (Annotation)
+import Data.EpisodeAlgebra (Episode)
+import Data.EventAlgebra (Event)
 import Data.Semantic.SemanticAnnotation (SemanticAnnotation)
-import Data.Time (Time)  
+import Data.Semantic.SemanticEventAlgebra (SemanticEvent)
   
 -------------------------------------------------  
 
-class (SemanticAnnotation s, Time t) => SemanticEpisodeAlgebra l s t where
-    data SemanticEpisode l s t
+class InternalEvent e
+instance InternalEvent (Event l t)
+instance InternalEvent (SemanticEvent s l t)
+
+class (Annotation a, InternalEvent e, SemanticAnnotation s) => SemanticEpisodeAlgebra a e s where
+    data SemanticEpisode a e s
     
-    events :: SemanticEpisode l s t -> [Event l t]
-    semanticAnnotation :: SemanticEpisode l s t -> s
+    -- | Constructors
+    construct :: a -> [e] -> s ->  SemanticEpisode a e s
+    enrich :: e ~ Event l t => Episode a l t -> s ->  SemanticEpisode a e s
+    
+    -- | Observations
+    elements :: SemanticEpisode a e s -> e
+    annotation :: SemanticEpisode a e s -> a
+    semanticAnnotation :: SemanticEpisode a e s -> s
