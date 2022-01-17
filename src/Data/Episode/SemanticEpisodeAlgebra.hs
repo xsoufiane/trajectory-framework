@@ -3,7 +3,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Data.Semantic.SemanticEpisodeAlgebra
+module Data.Episode.SemanticEpisodeAlgebra
     (
       -- * Types
       SemanticEpisode
@@ -11,18 +11,18 @@ module Data.Semantic.SemanticEpisodeAlgebra
       -- * Constructors
     , construct
     , enrich
-      
+
       -- * Observations
     , annotation
     , elements
     , semanticAnnotation
     ) where
 
-import Data.Annotation (Annotation)
-import Data.EpisodeAlgebra (Episode)
-import Data.EventAlgebra (Event)
-import Data.Semantic.SemanticAnnotation (SemanticAnnotation)
-import Data.Semantic.SemanticEventAlgebra (SemanticEvent)
+import Data.Annotation.Annotation (Annotation)
+import Data.Annotation.SemanticAnnotation (SemanticAnnotation)
+import Data.Episode.EpisodeAlgebra (Episode)
+import Data.Event.EventAlgebra (Event)
+import Data.Event.SemanticEventAlgebra (SemanticEvent)
   
 -------------------------------------------------  
 
@@ -36,7 +36,7 @@ class (Annotation a, InternalEvent e, SemanticAnnotation s) => SemanticEpisodeAl
     -- | Constructors
     construct :: a -> [e] -> s ->  SemanticEpisode a e s
     enrich :: e ~ Event l t => Episode a l t -> s ->  SemanticEpisode a e s
-    
+
     -- | Observations
     elements :: SemanticEpisode a e s -> e
     annotation :: SemanticEpisode a e s -> a

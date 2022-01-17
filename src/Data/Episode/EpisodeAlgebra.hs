@@ -2,7 +2,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Data.EpisodeAlgebra
+module Data.Episode.EpisodeAlgebra
     (
       -- * Types
       Episode
@@ -16,8 +16,8 @@ module Data.EpisodeAlgebra
     , annotation
     ) where
 
-import Data.Annotation (Annotation)
-import Data.EventAlgebra (Event)
+import Data.Annotation.Annotation (Annotation)
+import Data.Event.EventAlgebra (Event)
 import Data.Time (Time)
 
 ---------------------------------------
