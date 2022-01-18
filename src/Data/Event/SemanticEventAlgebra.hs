@@ -8,6 +8,7 @@ module Data.Event.SemanticEventAlgebra
     (
       -- * Types
       SemanticEvent
+    , SemanticEventAlgebra  
 
       -- * Constructors
     , enrich

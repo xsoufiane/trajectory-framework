@@ -17,7 +17,6 @@ module Data.Event.EventAlgebra
     , observables
     , time
     , (===)
-    , EventChrononObs((<))
     ) where
 
 import Data.HList (HList)
@@ -25,9 +24,6 @@ import Data.Kind (Type)
 import Prelude hiding ((<))
 
 import Data.Internal.HObservable (HObservable)
-import Data.Time (Time, ChrononObs, Period)
-
-import qualified Data.Chronon as C (ChrononObs((<)))
 
 ---------------------------------------------------------------------------------
 
@@ -43,6 +39,4 @@ class (HObservable l, Time t) => EventAlgebra (l :: [Type]) t where
     time :: Event l t -> t
     (===) :: Event l t -> Event l t -> Bool
  
-class (EventAlgebra (l :: [Type]) t, ChrononObs t) => EventChrononObs (l :: [Type]) t where 
-    (<) :: Event l t -> Event l t -> Bool
-    x < y =  (C.<) (time x) (time y)
+
