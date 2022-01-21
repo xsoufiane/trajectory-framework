@@ -21,6 +21,7 @@ module Data.Event.EventAlgebra
 
 import Data.HList (HList)
 import Data.Kind (Type)
+import Data.Time (Time)
 import Prelude hiding ((<))
 
 import Data.Internal.HObservable (HObservable)
@@ -38,5 +39,3 @@ class (HObservable l, Time t) => EventAlgebra (l :: [Type]) t where
     observables :: Event l t -> HList l
     time :: Event l t -> t
     (===) :: Event l t -> Event l t -> Bool
- 
-
