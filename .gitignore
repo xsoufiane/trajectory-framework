@@ -4,5 +4,4 @@ stack.yaml.lock
 trajectory-algebra.cabal
 trajectory-algebra.iml
 out
-*.cabal
 *.iml

@@ -4,20 +4,19 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Data.Event.EventTime (EventTime ((<), (<=), (>), (>=))) where
+module Data.Event.EventTime (EventTime((<), (<=), (>), (>=), betweenness)) where
 
+import Data.Chronon (Chronon)
+import Data.Period (Period)
 import Prelude hiding ((<), (<=))
-import Data.Time (ChrononObs, Period)
-import Data.Period.PeriodObs (PeriodObs)
 
 import Data.Event.EventAlgebra (Event, EventAlgebra)
 import Data.Event.SemanticEventAlgebra (SemanticEvent, SemanticEventAlgebra)
 
 import qualified Data.Event.EventAlgebra as E (EventAlgebra(time))
-import qualified Data.Period.PeriodObs as P (PeriodObs((<)))
 import qualified Data.Event.SemanticEventAlgebra as SE (SemanticEventAlgebra(time))
-import qualified Data.Time as C (ChrononObs((<)))
-  
+import qualified Relation.Order as Time (Order((<)))
+
 ---------------------------------------
 
 -- | Observations  
@@ -32,17 +31,23 @@ class EventTime e where
     
     (>=) :: Eq e => e -> e -> Bool   
     x >= y = y <= x
-
-instance (ChrononObs t, EventAlgebra l t) => EventTime (Event l t) where
-    x < y = (C.<) (E.time x) (E.time y)
-
-instance (ChrononObs t, SemanticEventAlgebra l s t) => EventTime (SemanticEvent l s t) where
-    x < y = (C.<) (SE.time x) (SE.time y)
-
-instance {-# OVERLAPPING #-} (PeriodObs c t, EventAlgebra l (Period c t)) => EventTime (Event l (Period c t)) where
-    x < y = (P.<) (E.time x) (E.time y)
-
-instance {-# OVERLAPPING #-} (PeriodObs c t, SemanticEventAlgebra l  s (Period c t)) 
-    => EventTime (SemanticEvent l s (Period c t)) where
     
-    x < y = (P.<) (SE.time x) (SE.time y)    
+    -- | x is between y z
+    betweenness :: e -> e -> e -> Bool
+    betweenness x y z = (y < x && x < z) || (z < x && x < y)
+
+instance (Chronon t, Time.Order t, EventAlgebra l t) => EventTime (Event l t) where
+    x < y = (Time.<) (E.time x) (E.time y)
+
+instance (Chronon t, Time.Order t, SemanticEventAlgebra l s t) => EventTime (SemanticEvent l s t) where
+    x < y = (Time.<) (SE.time x) (SE.time y)
+
+instance {-# OVERLAPPING #-} (Time.Order (Period c t), EventAlgebra l (Period c t))
+    => EventTime (Event l (Period c t))
+  where
+    x < y = (Time.<) (E.time x) (E.time y)
+
+instance {-# OVERLAPPING #-} (Time.Order (Period c t), SemanticEventAlgebra l  s (Period c t)) 
+    => EventTime (SemanticEvent l s (Period c t)) 
+  where
+    x < y = (Time.<) (SE.time x) (SE.time y)    

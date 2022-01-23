@@ -6,7 +6,7 @@ packages:
 extra-deps:
 - HList-0.5.1.0
 - git: https://github.com/xsoufiane/time-framework
-  commit: 1bf7fdc2596d06ea3e7578c3c41bc54777ddd62e
+  commit: f08b1d5ffc7e41c802105e0ca6480628860b92f1
 - refined-0.6.2
 - these-skinny-0.7.4
 - quickspec-2.1.5
