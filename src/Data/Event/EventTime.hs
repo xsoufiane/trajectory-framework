@@ -36,6 +36,7 @@ class EventTime e where
     betweenness :: e -> e -> e -> Bool
     betweenness x y z = (y < x && x < z) || (z < x && x < y)
 
+-- | Useful Instances 
 instance (Chronon t, Time.Order t, EventAlgebra l t) => EventTime (Event l t) where
     x < y = (Time.<) (E.time x) (E.time y)
 
@@ -47,7 +48,7 @@ instance {-# OVERLAPPING #-} (Time.Order (Period c t), EventAlgebra l (Period c 
   where
     x < y = (Time.<) (E.time x) (E.time y)
 
-instance {-# OVERLAPPING #-} (Time.Order (Period c t), SemanticEventAlgebra l  s (Period c t)) 
+instance {-# OVERLAPPING #-} (Time.Order (Period c t), SemanticEventAlgebra l s (Period c t)) 
     => EventTime (SemanticEvent l s (Period c t)) 
   where
-    x < y = (Time.<) (SE.time x) (SE.time y)    
+    x < y = (Time.<) (SE.time x) (SE.time y)
