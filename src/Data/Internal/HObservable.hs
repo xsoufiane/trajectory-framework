@@ -15,4 +15,4 @@ import Data.Observable (Observable)
  
 class HObservable (l :: [Type])
 instance (Observable o, HObservable l) => HObservable (o ': l)
-instance {-# OVERLAPPING #-} Observable o => HObservable (o ': '[])
+instance HObservable '[]
