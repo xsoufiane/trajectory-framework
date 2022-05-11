@@ -1,18 +1,19 @@
 {-# OPTIONS_GHC -fno-warn-redundant-constraints #-}
 
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Data.Internal.HObservable (HObservable) where
-
+module Data.Event.Internal where
+  
+import Control.Exception.Base (Exception, displayException)  
 import Data.Kind (Type)
 
 import Data.Observable (Observable)
   
---------------------------------------------------------------------------  
- 
+------------------------------------------------------------------------------
+
+-- | Internal
 class HObservable (l :: [Type])
 instance (Observable o, HObservable l) => HObservable (o ': l)
 instance HObservable '[]

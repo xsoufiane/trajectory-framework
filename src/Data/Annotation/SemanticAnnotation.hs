@@ -1,3 +1,35 @@
-module Data.Annotation.SemanticAnnotation (SemanticAnnotation) where
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TypeFamilies #-}
 
-class SemanticAnnotation s
+
+module Data.Annotation.SemanticAnnotation 
+   (
+     -- * Types
+     SemanticAnnotation
+   , SemanticAnnotationAlgebra
+   
+     -- * Constructors
+   , construct
+   
+     -- * Observations
+   , annotation
+   , context
+   ) where
+
+import Data.Annotation.Annotation (Annotation, AnnotationAlgebra)  
+import Data.Annotation.Context (Context)  
+       
+-------------------------------------------------------     
+
+class (AnnotationAlgebra a, Context c) => SemanticAnnotationAlgebra a c where
+    data SemanticAnnotation a c
+    
+    -- | Constructors
+    construct :: Annotation a -> c -> SemanticAnnotation a c
+    
+    -- | Observations 
+    annotation :: SemanticAnnotation a c -> a
+    context :: SemanticAnnotation a c -> c
+    
