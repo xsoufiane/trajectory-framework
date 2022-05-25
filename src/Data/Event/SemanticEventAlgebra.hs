@@ -33,12 +33,9 @@ module Data.Event.SemanticEventAlgebra
 
 import Data.HList
 import Data.Kind (Type)
-import Data.Period (Period, PeriodType(Closed))
-import Data.Period.PeriodObs (PeriodObs(starts, finishes, during, overlaps), Meets(meets))
 import Data.Time (Time)
 import Prelude hiding ((<))
 import Relation.Identity (Identity)
-import Relation.Order (Order((<)))
 
 import Data.Annotation.SemanticAnnotation (SemanticAnnotation)
 import Data.Event.Internal (HObservable)
@@ -77,19 +74,3 @@ class (Functor (SemanticEvent l s), HObservable l, HSemanticAnnotation s, Identi
     observables :: SemanticEvent l s t -> HList l
     semanticAnnotations :: SemanticEvent l s t -> HList s
     time :: SemanticEvent l s t -> t
-
--- | Useful Instances
-instance (SemanticEventAlgebra l s t, Order t) => Order (SemanticEvent l s t) where
-   e < e' = time e < time e'
-
-instance (SemanticEventAlgebra l s (Period c t), PeriodObs (Period c t)) => PeriodObs (SemanticEvent l s (Period c t)) where
-    starts e e' = starts (time e) (time e')
-
-    finishes e e' = finishes (time e) (time e')
-
-    during e e' = during (time e) (time e')
-
-    overlaps e e' = overlaps (time e) (time e')
-
-instance (SemanticEventAlgebra l s (Period 'Closed t), Meets (Period 'Closed t)) => Meets (SemanticEvent l s (Period 'Closed t)) where
-    meets e e'= meets (time e) (time e')

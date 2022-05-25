@@ -6,7 +6,6 @@
 
 module Data.Event.Internal where
   
-import Control.Exception.Base (Exception, displayException)  
 import Data.Kind (Type)
 
 import Data.Observable (Observable)
