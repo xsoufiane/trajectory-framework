@@ -11,33 +11,48 @@ module Data.Episode.SemanticEpisodeAlgebra
       -- * Constructors
     , construct
     , enrich
+    , mapAnnotations
+    , mapSemanticAnnotations
 
       -- * Observations
-    , annotation
-    , elements
-    , semanticAnnotation
+    , annotations
+    , events
+    , semanticAnnotations
     ) where
 
-import Data.Annotation.Annotation (Annotation)
-import Data.Annotation.SemanticAnnotation (SemanticAnnotation)
+import Data.HList (HList)  
+import Data.Kind (Type)
+
 import Data.Episode.EpisodeAlgebra (Episode)
 import Data.Event.EventAlgebra (Event)
 import Data.Event.SemanticEventAlgebra (SemanticEvent)
+import Data.Episode.Internal (HAnnotation)
+import Data.Internal (HSemanticAnnotation)
   
 -------------------------------------------------  
 
+-- | Internal
 class InternalEvent e
 instance InternalEvent (Event l t)
 instance InternalEvent (SemanticEvent s l t)
 
-class (Annotation a, InternalEvent e, SemanticAnnotation s) => SemanticEpisodeAlgebra a e s where
+-- | Algebra
+class (HAnnotation a, InternalEvent e, HSemanticAnnotation s) => SemanticEpisodeAlgebra (a :: [Type]) e (s :: [Type]) where
     data SemanticEpisode a e s
     
     -- | Constructors
-    construct :: a -> [e] -> s ->  SemanticEpisode a e s
-    enrich :: e ~ Event l t => Episode a l t -> s ->  SemanticEpisode a e s
+    construct :: HList a -> [e] -> HList s ->  SemanticEpisode a e s
+    enrich :: e ~ Event l t => Episode a e -> HList s ->  SemanticEpisode a e s
+    
+    -- | Annotation related constructors
+    mapAnnotations ::  SemanticEpisodeAlgebra a' e s => (HList a -> HList a') -> SemanticEpisode a e s -> SemanticEpisode a' e s
+    mapAnnotations f e = construct (f $ annotations e) (events e) (semanticAnnotations e)
+    
+    -- | Semantic Annotation related constructors
+    mapSemanticAnnotations ::  SemanticEpisodeAlgebra a e s' => (HList s -> HList s') -> SemanticEpisode a e s -> SemanticEpisode a e s'
+    mapSemanticAnnotations f e = construct (annotations e) (events e) (f $ semanticAnnotations e)
 
     -- | Observations
-    elements :: SemanticEpisode a e s -> e
-    annotation :: SemanticEpisode a e s -> a
-    semanticAnnotation :: SemanticEpisode a e s -> s
+    events :: SemanticEpisode a e s -> [e]
+    annotations :: SemanticEpisode a e s -> HList a
+    semanticAnnotations :: SemanticEpisode a e s -> HList s

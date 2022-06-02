@@ -1,6 +1,9 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 module Data.Episode.EpisodeAlgebra
     (
@@ -10,24 +13,36 @@ module Data.Episode.EpisodeAlgebra
 
       -- * Constructors
     , construct
+    , mapAnnotations
     
       -- * Observations
     , events
-    , annotation
+    , annotations
     ) where
 
-import Data.Annotation.Annotation (Annotation)
+import Data.HList (HList)
+import Data.Kind (Type)
+
+import Data.Episode.Internal (HAnnotation)
 import Data.Event.EventAlgebra (Event)
-import Data.Time (Time)
 
----------------------------------------
+-------------------------------------------------------------------------------------------------------
 
-class (Annotation a, Time t) => EpisodeAlgebra a l t where
-    data Episode a l t
+-- | Internal
+class InternalEvent e
+instance InternalEvent (Event l t)
+
+-- | Algebra
+class (Functor (Episode a), HAnnotation a, InternalEvent e) => EpisodeAlgebra (a :: [Type]) e where
+    data Episode a e
     
     -- | Constructors
-    construct :: a -> [Event l t] -> Episode a l t
+    construct :: HList a -> [e] -> Episode a e
+    
+    -- | Annotation related constructors
+    mapAnnotations ::  EpisodeAlgebra a' e => (HList a -> HList a') -> Episode a e -> Episode a' e
+    mapAnnotations f e = construct (f $ annotations e) (events e)
 
     -- | Observations
-    events :: Episode a l t -> [Event l t]
-    annotation :: Episode a l t -> a
+    events :: Episode a e -> [e]
+    annotations :: Episode a e -> HList a
