@@ -32,14 +32,21 @@ import Data.Internal (HObservable)
 ----------------------------------------------------------------------------------------------------------------
 
 -- | Algebra
-class (Functor (Event l), HObservable l, Time t, Identity (Event l t)) => EventAlgebra (l :: [Type]) t where
+class
+    (
+      Functor (Event l)
+    , HObservable l
+    , Time t
+    , Identity (Event l t)
+    , Semigroup (Event l t)
+    ) => EventAlgebra (l :: [Type]) t where
     data Event l t
 
     -- | Constructors
     construct :: HList l -> t -> Event l t
 
     -- | Observable related constructors
-    mapObservable ::  EventAlgebra l' t => (HList l -> HList l') -> Event l t -> Event l' t
+    mapObservable :: EventAlgebra l' t => (HList l -> HList l') -> Event l t -> Event l' t
     mapObservable f e = construct (f $ observables e) (time e)
 
     -- | Observations

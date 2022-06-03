@@ -33,7 +33,14 @@ class InternalEvent e
 instance InternalEvent (Event l t)
 
 -- | Algebra
-class (Functor (Episode a), HAnnotation a, InternalEvent e) => EpisodeAlgebra (a :: [Type]) e where
+class 
+    (
+      Functor (Episode a)
+    , HAnnotation a
+    , InternalEvent e
+    , Semigroup (Episode a e)
+    ) => EpisodeAlgebra (a :: [Type]) e 
+  where
     data Episode a e
     
     -- | Constructors

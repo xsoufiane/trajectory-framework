@@ -38,7 +38,15 @@ instance InternalEvent (Event l t)
 instance InternalEvent (SemanticEvent s l t)
 
 -- | Algebra
-class (Functor (SemanticEpisode a s), HAnnotation a, InternalEvent e, HSemanticAnnotation s) => SemanticEpisodeAlgebra (a :: [Type]) (s :: [Type]) e where
+class 
+    (
+      Functor (SemanticEpisode a s)
+    , HAnnotation a
+    , InternalEvent e
+    , HSemanticAnnotation s
+    , Semigroup (SemanticEpisode a s e)
+    ) => SemanticEpisodeAlgebra (a :: [Type]) (s :: [Type]) e 
+  where
     data SemanticEpisode a s e
     
     -- | Constructors
@@ -46,11 +54,15 @@ class (Functor (SemanticEpisode a s), HAnnotation a, InternalEvent e, HSemanticA
     enrich :: e ~ Event l t => Episode a e -> HList s ->  SemanticEpisode a s e
 
     -- | Annotation related constructors
-    mapAnnotations ::  SemanticEpisodeAlgebra a' s e => (HList a -> HList a') -> SemanticEpisode a s e -> SemanticEpisode a' s e
+    mapAnnotations 
+        :: SemanticEpisodeAlgebra a' s e 
+        => (HList a -> HList a') -> SemanticEpisode a s e -> SemanticEpisode a' s e
     mapAnnotations f e = construct (f $ annotations e) (events e) (semanticAnnotations e)
 
     -- | Semantic Annotation related constructors
-    mapSemanticAnnotations ::  SemanticEpisodeAlgebra a s' e => (HList s -> HList s') -> SemanticEpisode a s e -> SemanticEpisode a s' e
+    mapSemanticAnnotations 
+        :: SemanticEpisodeAlgebra a s' e
+        => (HList s -> HList s') -> SemanticEpisode a s e -> SemanticEpisode a s' e
     mapSemanticAnnotations f e = construct (annotations e) (events e) (f $ semanticAnnotations e)
 
     -- | Observations

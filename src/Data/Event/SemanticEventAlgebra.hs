@@ -38,7 +38,16 @@ import Data.Internal (HObservable, HSemanticAnnotation)
 ---------------------------------------------------------------------------------------
 
 -- | Algebra
-class (Functor (SemanticEvent l s), HObservable l, HSemanticAnnotation s, Identity (SemanticEvent l s t), Time t) => SemanticEventAlgebra (l :: [Type])  (s :: [Type]) t where
+class 
+    ( 
+      Functor (SemanticEvent l s)
+    , HObservable l
+    , HSemanticAnnotation s
+    , Identity (SemanticEvent l s t)
+    , Time t
+    , Semigroup (Event l t)
+    ) => SemanticEventAlgebra (l :: [Type])  (s :: [Type]) t 
+  where
     data SemanticEvent l s t
 
     -- | Constructors
@@ -46,11 +55,15 @@ class (Functor (SemanticEvent l s), HObservable l, HSemanticAnnotation s, Identi
     construct :: HList l -> HList s  -> t -> SemanticEvent l s t
 
     -- | Observable related constructors
-    mapObservable ::  SemanticEventAlgebra l' s t => (HList l -> HList l') -> SemanticEvent l s t -> SemanticEvent l' s t
+    mapObservable 
+        ::  SemanticEventAlgebra l' s t 
+        => (HList l -> HList l') -> SemanticEvent l s t -> SemanticEvent l' s t
     mapObservable f e = construct (f $ observables e) (semanticAnnotations e) (time e)
 
     -- | Annotation related constructors
-    mapAnnotations ::  SemanticEventAlgebra l s' t => (HList s -> HList s') -> SemanticEvent l s t -> SemanticEvent l s' t
+    mapAnnotations 
+        ::  SemanticEventAlgebra l s' t 
+        => (HList s -> HList s') -> SemanticEvent l s t -> SemanticEvent l s' t
     mapAnnotations f e = construct (observables e) (f $ semanticAnnotations e)  (time e)
 
     -- | Observations
