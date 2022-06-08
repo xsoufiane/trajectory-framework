@@ -23,6 +23,7 @@ module Data.Episode.SemanticEpisodeAlgebra
 
 import Data.HList (HList)  
 import Data.Kind (Type)
+import Relation.Identity (Identity)
 
 import Data.Episode.EpisodeAlgebra (Episode)
 import Data.Event.EventAlgebra (Event)
@@ -42,6 +43,7 @@ class
     (
       Functor (SemanticEpisode a s)
     , HAnnotation a
+    , Identity (Episode a e)
     , InternalEvent e
     , HSemanticAnnotation s
     , Semigroup (SemanticEpisode a s e)
