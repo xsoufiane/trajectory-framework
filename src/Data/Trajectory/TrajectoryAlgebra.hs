@@ -1,13 +1,13 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module Data.Trajectory.TrajectoryAlgebra
     (
-      -- * Types
+      -- * Trajectory Types
       TrajectoryAlgebra
     , Trajectory
-    , SimilarityValue
 
       -- * Constructors
     , construct
@@ -18,7 +18,9 @@ module Data.Trajectory.TrajectoryAlgebra
     , tail
     , append
     , prepend
-    , filter 
+    , filter
+    , structure
+    , unStructure
     
       -- * Observations
     , elements
@@ -26,17 +28,24 @@ module Data.Trajectory.TrajectoryAlgebra
     , contains
     , value
     , toEpisode
-    
+    , similarity
+    , estimate
+    , cluster
+    , anomaly
+    , outlier
+
       -- * Misc
+    , SimilarityValue
     , similarityValue
     ) where
 
 import Data.Chronon (Chronon)
+import Data.Time (Time)
 import Data.HList (HList)
 import Data.Period (Period)
 import Data.Set (Set, fromList, toList)
 import Prelude hiding (concat, filter, head, tail)  
-  
+
 import Data.Event.EventAlgebra (Event)
 import Data.Episode.EpisodeAlgebra (Episode, EpisodeAlgebra, events)
 
@@ -59,6 +68,7 @@ similarityValue x =
     else Nothing
   
 -- | Algebra
+type Interpolator t e = (t -> Trajectory e -> e)
 class (Functor Trajectory, InternalElement e, Ord e, Semigroup (Trajectory e)) => TrajectoryAlgebra e where
     data Trajectory e
     
@@ -73,6 +83,8 @@ class (Functor Trajectory, InternalElement e, Ord e, Semigroup (Trajectory e)) =
     tail :: Trajectory e -> Maybe (Trajectory e)
     append, prepend :: Trajectory e -> Trajectory e -> Trajectory e
     filter :: (e -> Bool) -> Trajectory e -> Trajectory e
+    structure :: e ~ Event l t => (e -> HList a) -> Trajectory e -> Trajectory (Episode a e)
+    unStructure :: e ~ Event l t => Trajectory (Episode a e) -> Trajectory e
      
     -- | Observations
     elements :: Trajectory e -> Set e
@@ -84,4 +96,7 @@ class (Functor Trajectory, InternalElement e, Ord e, Semigroup (Trajectory e)) =
     toEpisode a t = Episode.construct a (toList $ elements t)
     
     similarity :: Trajectory e -> Trajectory e -> SimilarityValue
-    
+    estimate :: Time t => Interpolator t e -> t -> Trajectory e -> e
+    cluster :: [Trajectory e] -> [[Trajectory e]]
+    anomaly :: (e -> Bool) -> Trajectory e -> [e]
+    outlier :: (Trajectory e -> Bool) -> [Trajectory e] -> [Trajectory e]

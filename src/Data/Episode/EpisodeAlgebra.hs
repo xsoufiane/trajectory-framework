@@ -20,7 +20,7 @@ module Data.Episode.EpisodeAlgebra
     , mapAnnotations
     , append
     , prepend
-    , filter 
+    , filter
     
       -- * Observations
     , events
@@ -70,7 +70,7 @@ class
     mapAnnotations ::  EpisodeAlgebra a' e => (HList a -> HList a') -> Episode a e -> Episode a' e
     mapAnnotations f e = construct (f $ annotations e) (events e)
 
-    -- | Observations 
+    -- | Observations
     events :: Episode a e -> [e]
     annotations :: Episode a e -> HList a
     head :: Episode a e -> Maybe e
