@@ -30,9 +30,9 @@ module Data.Trajectory.TrajectoryAlgebra
     , toEpisode
     , similarity
     , estimate
-    , cluster
-    , anomaly
-    , outlier
+    , clusters
+    , anomalies
+    , outliers
 
       -- * Misc
     , SimilarityValue
@@ -97,6 +97,6 @@ class (Functor Trajectory, InternalElement e, Ord e, Semigroup (Trajectory e)) =
     
     similarity :: Trajectory e -> Trajectory e -> SimilarityValue
     estimate :: Time t => Interpolator t e -> t -> Trajectory e -> e
-    cluster :: [Trajectory e] -> [[Trajectory e]]
-    anomaly :: (e -> Bool) -> Trajectory e -> [e]
-    outlier :: (Trajectory e -> Bool) -> [Trajectory e] -> [Trajectory e]
+    clusters :: [Trajectory e] -> [[Trajectory e]]
+    anomalies :: (e -> Bool) -> Trajectory e -> [e]
+    outliers :: (Trajectory e -> Bool) -> [Trajectory e] -> [Trajectory e]

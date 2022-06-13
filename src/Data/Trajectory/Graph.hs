@@ -5,10 +5,10 @@
 module Data.Trajectory.Graph
     (
       -- * Types
-      TrajectoryGraph
+      Graph
     , Node
     , Edge
-    , Graph
+    , GraphStruct
               
       -- * Constructors
     , node
@@ -23,7 +23,7 @@ module Data.Trajectory.Graph
 
 ----------------------------------------
 
-class TrajectoryGraph t n where
+class GraphStruct t n where
     data Node n
     data Edge n
     data Graph n
