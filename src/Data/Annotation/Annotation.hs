@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module Data.Annotation.Annotation 
@@ -10,9 +11,11 @@ module Data.Annotation.Annotation
    , construct
    ) where
 
+import Relation.Identity (Identity)
+  
 -------------------------------------------------------   
   
-class AnnotationAlgebra a where
+class (Identity (Annotation a)) => AnnotationAlgebra a where
     data Annotation a
     
     -- | Constructors

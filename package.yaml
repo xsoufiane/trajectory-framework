@@ -23,14 +23,8 @@ dependencies:
 - base >= 4.7 && < 5
 - HList
 - time-framework
-- either
-- refined
-- singletons
-- template-haskell
-- QuickCheck
-- smallcheck
+- containers
 - tasty
-- tasty-smallcheck
 
 library:
   source-dirs: src

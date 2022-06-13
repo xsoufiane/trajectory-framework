@@ -17,7 +17,6 @@ module Data.Episode.SemanticEpisodeAlgebra
 
       -- * Observations
     , annotations
-    , events
     , semanticAnnotations
     ) where
 
@@ -30,6 +29,8 @@ import Data.Event.EventAlgebra (Event)
 import Data.Event.SemanticEventAlgebra (SemanticEvent)
 import Data.Episode.Internal (HAnnotation)
 import Data.Internal (HSemanticAnnotation)
+
+import Data.TrajectoryLike 
   
 -------------------------------------------------  
 
@@ -47,6 +48,7 @@ class
     , InternalEvent e
     , HSemanticAnnotation s
     , Semigroup (SemanticEpisode a s e)
+    , TrajectoryLike (SemanticEpisode a s e) e
     ) => SemanticEpisodeAlgebra (a :: [Type]) (s :: [Type]) e 
   where
     data SemanticEpisode a s e
@@ -59,15 +61,14 @@ class
     mapAnnotations 
         :: SemanticEpisodeAlgebra a' s e 
         => (HList a -> HList a') -> SemanticEpisode a s e -> SemanticEpisode a' s e
-    mapAnnotations f e = construct (f $ annotations e) (events e) (semanticAnnotations e)
+    mapAnnotations f e = construct (f $ annotations e) (elements e) (semanticAnnotations e)
 
     -- | Semantic Annotation related constructors
     mapSemanticAnnotations 
         :: SemanticEpisodeAlgebra a s' e
         => (HList s -> HList s') -> SemanticEpisode a s e -> SemanticEpisode a s' e
-    mapSemanticAnnotations f e = construct (annotations e) (events e) (f $ semanticAnnotations e)
+    mapSemanticAnnotations f e = construct (annotations e) (elements e) (f $ semanticAnnotations e)
 
     -- | Observations
-    events :: SemanticEpisode a s e -> [e]
     annotations :: SemanticEpisode a s e -> HList a
     semanticAnnotations :: SemanticEpisode a s e -> HList s
