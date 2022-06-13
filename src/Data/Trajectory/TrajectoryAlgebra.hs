@@ -19,14 +19,12 @@ module Data.Trajectory.TrajectoryAlgebra
     , toEpisode
     ) where
 
-import Data.Chronon (Chronon)
-import Data.Time (Time)
 import Data.HList (HList)
 import Prelude hiding (filter, head, tail)
 import Relation.Identity (Identity)
 
 import Data.Event.EventAlgebra (Event)
-import Data.Episode.EpisodeAlgebra (Episode, EpisodeAlgebra, events)
+import Data.Episode.EpisodeAlgebra (Episode, EpisodeAlgebra)
 import Data.TrajectoryLike
 
 import qualified Data.Episode.EpisodeAlgebra as Episode (construct) 
@@ -54,7 +52,7 @@ class
     construct :: [e] -> Trajectory e
     
     fromEpisode :: EpisodeAlgebra a e => Episode a e -> Trajectory e
-    fromEpisode = construct . events 
+    fromEpisode = construct . elements 
         
     structure :: e ~ Event l t => (e -> HList a) -> Trajectory e -> Trajectory (Episode a e)
     unStructure :: e ~ Event l t => Trajectory (Episode a e) -> Trajectory e

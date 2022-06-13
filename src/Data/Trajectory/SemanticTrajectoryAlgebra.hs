@@ -2,6 +2,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeOperators #-}
 
 module Data.Trajectory.SemanticTrajectoryAlgebra
     (
@@ -11,10 +12,12 @@ module Data.Trajectory.SemanticTrajectoryAlgebra
 
       -- * Constructors
     , construct
+    , enrich
     , mapSemanticAnnotations
     
       -- * Observations
     , semanticAnnotations
+    , deannotate
     ) where
 
 import Data.HList (HList)
@@ -28,6 +31,7 @@ import Data.Episode.EpisodeAlgebra (Episode)
 import Data.Episode.SemanticEpisodeAlgebra (SemanticEpisode)
 import Data.Internal (HSemanticAnnotation)
 import Data.TrajectoryLike
+import Data.Trajectory.TrajectoryAlgebra (Trajectory)
 
 ------------------------------------------------------------------------------
 
@@ -36,8 +40,14 @@ class InternalElement e
 instance InternalElement (Event l t)
 instance InternalElement (SemanticEvent l s t)
 instance InternalElement (Episode a e)
-instance InternalElement (SemanticEpisode a e s)
+instance InternalElement (SemanticEpisode a s e)
 
+type family DeAnnotate e where
+    DeAnnotate (Event l t) = Event l t
+    DeAnnotate (SemanticEvent l s t) = Event l t
+    DeAnnotate (Episode a e) = Episode a e
+    DeAnnotate (SemanticEpisode a s e) = Episode a e
+    
 -- | Algebra
 class
     (
@@ -53,6 +63,7 @@ class
     
     -- | Constructors
     construct :: [e] -> HList s -> SemanticTrajectory s e
+    enrich ::  (s ~ (x ': xs)) => Trajectory e -> HList s -> SemanticTrajectory s e
 
     mapSemanticAnnotations
         :: SemanticTrajectoryAlgebra s' e
@@ -61,3 +72,4 @@ class
 
     -- | Observations
     semanticAnnotations :: SemanticTrajectory s e -> HList s
+    deannotate :: SemanticTrajectory s e -> Trajectory (DeAnnotate e)

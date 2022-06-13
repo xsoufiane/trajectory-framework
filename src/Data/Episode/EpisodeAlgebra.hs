@@ -49,7 +49,7 @@ class
     
     -- | Constructors
     construct :: HList a -> [e] -> Episode a e
-   
+
     -- | Annotation related constructors
     mapAnnotations ::  EpisodeAlgebra a' e => (HList a -> HList a') -> Episode a e -> Episode a' e
     mapAnnotations f e = construct (f $ annotations e) (elements e)

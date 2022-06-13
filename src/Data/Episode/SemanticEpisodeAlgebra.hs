@@ -3,6 +3,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE TypeOperators #-}
 
 module Data.Episode.SemanticEpisodeAlgebra
     (
@@ -18,6 +19,7 @@ module Data.Episode.SemanticEpisodeAlgebra
       -- * Observations
     , annotations
     , semanticAnnotations
+    , deannotate
     ) where
 
 import Data.HList (HList)  
@@ -30,14 +32,18 @@ import Data.Event.SemanticEventAlgebra (SemanticEvent)
 import Data.Episode.Internal (HAnnotation)
 import Data.Internal (HSemanticAnnotation)
 
-import Data.TrajectoryLike 
-  
+import Data.TrajectoryLike
+
 -------------------------------------------------  
 
 -- | Internal
 class InternalEvent e
 instance InternalEvent (Event l t)
 instance InternalEvent (SemanticEvent s l t)
+
+type family DeAnnotate e where
+    DeAnnotate (Event l t) = Event l t
+    DeAnnotate (SemanticEvent l s t) = Event l t
 
 -- | Algebra
 class 
@@ -55,7 +61,7 @@ class
     
     -- | Constructors
     construct :: HList a -> [e] -> HList s ->  SemanticEpisode a s e
-    enrich :: e ~ Event l t => Episode a e -> HList s ->  SemanticEpisode a s e
+    enrich :: (e ~ Event l t, (s ~ (x ': xs))) => Episode a e -> HList s ->  SemanticEpisode a s e
 
     -- | Annotation related constructors
     mapAnnotations 
@@ -72,3 +78,4 @@ class
     -- | Observations
     annotations :: SemanticEpisode a s e -> HList a
     semanticAnnotations :: SemanticEpisode a s e -> HList s
+    deannotate :: SemanticEpisode a s e -> Episode a (DeAnnotate e)
