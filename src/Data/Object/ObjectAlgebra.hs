@@ -2,6 +2,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module Data.Object.ObjectAlgebra
@@ -9,26 +10,51 @@ module Data.Object.ObjectAlgebra
       -- * Types
       ObjectAlgebra
     , Object
+    , Id
 
       -- * Constructors
     , construct
     
       -- * Observations
+    , id
     , trajectories
+    , add
+    , belongs
+    , remove
     ) where
 
+import Data.Kind (Type)  
 import Data.HList (HList)
+import Prelude hiding (id)
 
-import Data.Internal.HTrajectory (HTrajectory)
+import Data.Trajectory.TrajectoryAlgebra (Trajectory)
+import Data.Trajectory.SemanticTrajectoryAlgebra (SemanticTrajectory)
 
 ----------------------------------------------------------------------------------------------------
 
--- | Algebra  
-class ObjectAlgebra o where
-    data Object o
-    
-    -- | Constructors
-    construct :: o -> Object o
+-- | Internal
+type family HTrajectory (l :: [Type]) :: Bool where
+    HTrajectory '[] = 'True
+    HTrajectory (Trajectory e ': t) = HTrajectory t
+    HTrajectory (SemanticTrajectory e s ': t) = HTrajectory t
 
-    -- | Observations 
-    trajectories :: HTrajectory l ~ 'True => Object o -> HList l
+-- | Exceptions
+
+
+-- | Algebra
+data Result = Success | Failure
+
+data Id
+data Object
+
+class ObjectAlgebra obj where
+  
+    -- | Constructors
+    construct :: HTrajectory l ~ 'True => HList l -> Id -> obj
+
+    -- | Observations
+    id :: obj -> Id
+    trajectories :: HTrajectory l ~ 'True => obj -> HList l
+    add :: HTrajectory l ~ 'True => HList l -> obj -> Result
+    belongs :: HTrajectory l ~ 'True => HList l -> obj -> Result
+    remove :: HTrajectory l ~ 'True => HList l -> obj -> Result

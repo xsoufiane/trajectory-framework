@@ -2,15 +2,15 @@
 
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Data.Internal (HObservable, HSemanticAnnotation) where
+module Data.Internal (HObservable, HSemanticAnnotation, NotEmpty) where
 
 import Data.Kind (Type)
 
-import Data.Observable (Observable)
 import Data.Annotation.SemanticAnnotation (SemanticAnnotation)
+import Data.Observable (Observable)
 
 --------------------------------------------------
 
@@ -22,3 +22,7 @@ instance HObservable '[]
 class HSemanticAnnotation (s :: [Type])
 instance HSemanticAnnotation l => HSemanticAnnotation (SemanticAnnotation c a ': l)
 instance HSemanticAnnotation (SemanticAnnotation c a ': '[])
+
+type family NotEmpty (a :: [Type]) :: Bool where
+    NotEmpty (x ': xs) = 'True
+    NotEmpty _ = 'False

@@ -30,7 +30,7 @@ import Data.Episode.EpisodeAlgebra (Episode)
 import Data.Event.EventAlgebra (Event)
 import Data.Event.SemanticEventAlgebra (SemanticEvent)
 import Data.Episode.Internal (HAnnotation)
-import Data.Internal (HSemanticAnnotation)
+import Data.Internal (HSemanticAnnotation, NotEmpty)
 
 import Data.TrajectoryLike
 
@@ -55,13 +55,15 @@ class
     , HSemanticAnnotation s
     , Semigroup (SemanticEpisode a s e)
     , TrajectoryLike (SemanticEpisode a s e) e
+    , NotEmpty a ~ 'True
+    , NotEmpty s ~ 'True
     ) => SemanticEpisodeAlgebra (a :: [Type]) (s :: [Type]) e 
   where
     data SemanticEpisode a s e
     
     -- | Constructors
     construct :: HList a -> [e] -> HList s ->  SemanticEpisode a s e
-    enrich :: (e ~ Event l t, (s ~ (x ': xs))) => Episode a e -> HList s ->  SemanticEpisode a s e
+    enrich :: Episode a e -> HList s ->  SemanticEpisode a s e
 
     -- | Annotation related constructors
     mapAnnotations 

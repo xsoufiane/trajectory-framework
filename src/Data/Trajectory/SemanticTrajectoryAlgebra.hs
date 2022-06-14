@@ -29,7 +29,7 @@ import Data.Event.EventAlgebra (Event)
 import Data.Event.SemanticEventAlgebra (SemanticEvent)
 import Data.Episode.EpisodeAlgebra (Episode)
 import Data.Episode.SemanticEpisodeAlgebra (SemanticEpisode)
-import Data.Internal (HSemanticAnnotation)
+import Data.Internal (HSemanticAnnotation, NotEmpty)
 import Data.TrajectoryLike
 import Data.Trajectory.TrajectoryAlgebra (Trajectory)
 
@@ -47,6 +47,11 @@ type family DeAnnotate e where
     DeAnnotate (SemanticEvent l s t) = Event l t
     DeAnnotate (Episode a e) = Episode a e
     DeAnnotate (SemanticEpisode a s e) = Episode a e
+
+type family Semantic e :: Bool where
+    Semantic (SemanticEvent l s t) = 'True
+    Semantic (SemanticEpisode a s e) = 'True
+    Semantic _ = 'False
     
 -- | Algebra
 class
@@ -62,13 +67,12 @@ class
     data SemanticTrajectory s e
     
     -- | Constructors
-    construct :: [e] -> HList s -> SemanticTrajectory s e
-    enrich ::  (s ~ (x ': xs)) => Trajectory e -> HList s -> SemanticTrajectory s e
+    construct :: Semantic e ~ 'True => [e] -> HList s -> SemanticTrajectory s e
+    enrich ::  NotEmpty s ~ 'True => Trajectory e -> HList s -> SemanticTrajectory s e
 
     mapSemanticAnnotations
         :: SemanticTrajectoryAlgebra s' e
         => (HList s -> HList s') -> SemanticTrajectory s e -> SemanticTrajectory s' e
-    mapSemanticAnnotations f e = construct (elements e) (f $ semanticAnnotations e)
 
     -- | Observations
     semanticAnnotations :: SemanticTrajectory s e -> HList s

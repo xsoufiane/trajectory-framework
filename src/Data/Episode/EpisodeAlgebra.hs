@@ -4,6 +4,7 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE TypeOperators #-}
 
 module Data.Episode.EpisodeAlgebra
     (
@@ -26,6 +27,7 @@ import Relation.Identity (Identity)
 
 import Data.Episode.Internal (HAnnotation)
 import Data.Event.EventAlgebra (Event)
+import Data.Internal (NotEmpty)
 import Data.TrajectoryLike
 
 -------------------------------------------------------------------------------------------------------
@@ -43,6 +45,7 @@ class
     , InternalEvent e
     , Semigroup (Episode a e)
     , TrajectoryLike (Episode a e) e
+    , NotEmpty a ~ 'True
     ) => EpisodeAlgebra (a :: [Type]) e 
   where
     data Episode a e
@@ -51,7 +54,7 @@ class
     construct :: HList a -> [e] -> Episode a e
 
     -- | Annotation related constructors
-    mapAnnotations ::  EpisodeAlgebra a' e => (HList a -> HList a') -> Episode a e -> Episode a' e
+    mapAnnotations :: EpisodeAlgebra a' e => (HList a -> HList a') -> Episode a e -> Episode a' e
     mapAnnotations f e = construct (f $ annotations e) (elements e)
 
     -- | Observations

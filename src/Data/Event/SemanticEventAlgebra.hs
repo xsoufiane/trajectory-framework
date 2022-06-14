@@ -33,7 +33,7 @@ import Prelude hiding ((<))
 import Relation.Identity (Identity)
 
 import Data.Event.EventAlgebra (Event)
-import Data.Internal (HObservable, HSemanticAnnotation)
+import Data.Internal (HObservable, HSemanticAnnotation, NotEmpty)
 
 ---------------------------------------------------------------------------------------
 
@@ -46,6 +46,7 @@ class
     , Identity (SemanticEvent l s t)
     , Time t
     , Semigroup (Event l t)
+    , NotEmpty s ~ 'True
     ) => SemanticEventAlgebra (l :: [Type])  (s :: [Type]) t 
   where
     data SemanticEvent l s t
