@@ -1,3 +1,4 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -10,7 +11,6 @@ module Data.Object.ObjectAlgebra
       -- * Types
       ObjectAlgebra
     , Object
-    , Id
 
       -- * Constructors
     , construct
@@ -23,38 +23,26 @@ module Data.Object.ObjectAlgebra
     , remove
     ) where
 
-import Data.Kind (Type)  
 import Data.HList (HList)
+import Data.Kind (Type)
 import Prelude hiding (id)
 
-import Data.Trajectory.TrajectoryAlgebra (Trajectory)
-import Data.Trajectory.SemanticTrajectoryAlgebra (SemanticTrajectory)
+import Data.Object.Common (TrajectoryNotFound)
+import Data.Object.Internal (HTrajectory, IsTrajectory)
 
 ----------------------------------------------------------------------------------------------------
 
--- | Internal
-type family HTrajectory (l :: [Type]) :: Bool where
-    HTrajectory '[] = 'True
-    HTrajectory (Trajectory e ': t) = HTrajectory t
-    HTrajectory (SemanticTrajectory e s ': t) = HTrajectory t
-
--- | Exceptions
-
-
 -- | Algebra
-data Result = Success | Failure
+class (Functor (Object t), HTrajectory t ~ 'True) => ObjectAlgebra (t :: [Type]) id where
 
-data Id
-data Object
+    data Object t id
 
-class ObjectAlgebra obj where
-  
     -- | Constructors
-    construct :: HTrajectory l ~ 'True => HList l -> Id -> obj
+    construct :: HTrajectory t ~ 'True => HList t -> id -> Object t id
 
     -- | Observations
-    id :: obj -> Id
-    trajectories :: HTrajectory l ~ 'True => obj -> HList l
-    add :: HTrajectory l ~ 'True => HList l -> obj -> Result
-    belongs :: HTrajectory l ~ 'True => HList l -> obj -> Result
-    remove :: HTrajectory l ~ 'True => HList l -> obj -> Result
+    id :: Object t id -> id
+    trajectories :: Object t id -> HList t
+    add :: HList t -> Object t id -> Object t id
+    belongs :: IsTrajectory tr ~ 'True => tr -> Object t id -> Bool
+    remove :: IsTrajectory tr ~ 'True => tr -> Object t id -> Either (Object t id) TrajectoryNotFound

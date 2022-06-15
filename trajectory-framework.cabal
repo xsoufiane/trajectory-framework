@@ -34,7 +34,8 @@ library
       Data.Event.EventAlgebra
       Data.Event.SemanticEventAlgebra
       Data.Internal
-      Data.Internal.HTrajectory
+      Data.Object.Common
+      Data.Object.Internal
       Data.Object.ObjectAlgebra
       Data.Object.SemanticObjectAlgebra
       Data.Observable
