@@ -23,12 +23,16 @@ dependencies:
 - base >= 4.7 && < 5
 - HList
 - time-framework
-- containers
 - tasty
+- QuickCheck
 
 library:
   source-dirs: src
-  exposed-modules: []
+  exposed-modules:
+  - Data.Annotation.Annotation
+  - Data.Annotation.Context
+  - Data.Annotation.SemanticAnnotation
+  - Data.Annotation.Laws
 
 tests:
   trajectory-framework-spec:
@@ -40,6 +44,7 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
+    - trajectory-framework
     - time-framework
     - QuickCheck
     - quickcheck-classes
@@ -47,4 +52,3 @@ tests:
     - tasty
     - tasty-quickcheck
     - tasty-smallcheck
-    - string-interpolate

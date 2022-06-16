@@ -31,5 +31,5 @@ class (AnnotationAlgebra a, Context c, Identity (SemanticAnnotation a c)) => Sem
     construct :: Annotation a -> c -> SemanticAnnotation a c
     
     -- | Observations 
-    annotation :: SemanticAnnotation a c -> a
+    annotation :: SemanticAnnotation a c -> Annotation a
     context :: SemanticAnnotation a c -> c

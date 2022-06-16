@@ -24,10 +24,12 @@ source-repository head
   location: https://github.com/xsoufiane/trajectory-framework
 
 library
-  other-modules:
+  exposed-modules:
       Data.Annotation.Annotation
       Data.Annotation.Context
       Data.Annotation.SemanticAnnotation
+      Data.Annotation.Laws
+  other-modules:
       Data.Episode.EpisodeAlgebra
       Data.Episode.Internal
       Data.Episode.SemanticEpisodeAlgebra
@@ -50,8 +52,8 @@ library
       src
   build-depends:
       HList
+    , QuickCheck
     , base >=4.7 && <5
-    , containers
     , tasty
     , time-framework
   default-language: Haskell2010
@@ -60,6 +62,7 @@ test-suite trajectory-framework-spec
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      AnnotationSpec
       Paths_trajectory_framework
   hs-source-dirs:
       test/spec
@@ -68,12 +71,11 @@ test-suite trajectory-framework-spec
       HList
     , QuickCheck
     , base >=4.7 && <5
-    , containers
     , quickcheck-classes
     , smallcheck
-    , string-interpolate
     , tasty
     , tasty-quickcheck
     , tasty-smallcheck
     , time-framework
+    , trajectory-framework
   default-language: Haskell2010
