@@ -4,15 +4,16 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
-module Data.Annotation.Laws (laws) where
+module Data.Annotation.SemanticAnnotationLaws (laws) where
 
 import Test.QuickCheck hiding ((===))
 
 import Data.Annotation.SemanticAnnotation
-  
+
 ----------------------------------------------------------
 
-type Constraints a c = 
+-- | Constraints
+type Constraints a c =
      (
        Arbitrary (SemanticAnnotation a c)
      , Eq (SemanticAnnotation a c)
@@ -20,8 +21,10 @@ type Constraints a c =
      , Show (SemanticAnnotation a c)
      )
 
+-- | Properties
 prop_construct :: forall a c. Constraints a c => Property
 prop_construct = property (\(x :: SemanticAnnotation a c) -> x == construct (annotation x) (context x))
 
+-- | Laws
 laws :: forall a c. Constraints a c => [(String, Property)]
 laws = [ ("Construct", prop_construct @a @c) ]

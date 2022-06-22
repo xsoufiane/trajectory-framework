@@ -32,7 +32,8 @@ library:
   - Data.Annotation.Annotation
   - Data.Annotation.Context
   - Data.Annotation.SemanticAnnotation
-  - Data.Annotation.Laws
+  - Data.Annotation.SemanticAnnotationLaws
+  - Laws.Functor
 
 tests:
   trajectory-framework-spec:
@@ -52,3 +53,4 @@ tests:
     - tasty
     - tasty-quickcheck
     - tasty-smallcheck
+    - tasty-quickcheck-laws

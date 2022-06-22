@@ -11,3 +11,4 @@ extra-deps:
 - these-skinny-0.7.4
 - quickspec-2.1.5
 - twee-lib-2.2
+- tasty-quickcheck-laws-0.0.3

@@ -8,15 +8,25 @@ module Data.Annotation.Annotation
    , AnnotationAlgebra
    
      -- * Constructors
-   , construct
+   , return
+   , (<$>)
    ) where
 
-import Relation.Identity (Identity)
-  
+import Prelude hiding ((<$>), return)  
+--import Relation.Identity (Identity)
+
 -------------------------------------------------------   
-  
-class (Identity (Annotation a)) => AnnotationAlgebra a where
+
+-- | Algebra
+--class Identity (Annotation a) => AnnotationAlgebra a where
+class AnnotationAlgebra a where
     data Annotation a
     
     -- | Constructors
-    construct :: a -> Annotation a
+    return :: a -> Annotation a
+    (<$>) :: AnnotationAlgebra b => (a -> b) -> Annotation a -> Annotation b
+          
+--    -- | Observations
+--    extract :: Annotation a -> a
+
+

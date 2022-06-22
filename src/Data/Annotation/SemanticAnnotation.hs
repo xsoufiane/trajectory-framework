@@ -17,14 +17,14 @@ module Data.Annotation.SemanticAnnotation
    , context
    ) where
 
-import Relation.Identity (Identity)
+--import Relation.Identity (Identity)
 
 import Data.Annotation.Annotation (Annotation, AnnotationAlgebra)  
 import Data.Annotation.Context (Context)
 
 -------------------------------------------------------     
 
-class (AnnotationAlgebra a, Context c, Identity (SemanticAnnotation a c)) => SemanticAnnotationAlgebra a c where
+class (AnnotationAlgebra a, Context c) => SemanticAnnotationAlgebra a c where
     data SemanticAnnotation a c
     
     -- | Constructors

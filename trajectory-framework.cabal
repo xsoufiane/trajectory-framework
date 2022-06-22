@@ -28,7 +28,8 @@ library
       Data.Annotation.Annotation
       Data.Annotation.Context
       Data.Annotation.SemanticAnnotation
-      Data.Annotation.Laws
+      Data.Annotation.SemanticAnnotationLaws
+      Laws.Functor
   other-modules:
       Data.Episode.EpisodeAlgebra
       Data.Episode.Internal
@@ -62,7 +63,9 @@ test-suite trajectory-framework-spec
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      AnnotationSpec
+      Spec.Annotation.AnnotationSpec
+      Spec.Annotation.Internal
+      Spec.Annotation.SemanticAnnotationSpec
       Paths_trajectory_framework
   hs-source-dirs:
       test/spec
@@ -75,6 +78,7 @@ test-suite trajectory-framework-spec
     , smallcheck
     , tasty
     , tasty-quickcheck
+    , tasty-quickcheck-laws
     , tasty-smallcheck
     , time-framework
     , trajectory-framework
