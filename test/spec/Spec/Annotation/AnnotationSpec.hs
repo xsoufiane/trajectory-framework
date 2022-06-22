@@ -11,9 +11,9 @@ module Spec.Annotation.AnnotationSpec (spec) where
 import Test.Tasty
 import Test.Tasty.QuickCheck
 
-import Data.Annotation.Annotation
-import Laws.Functor as Functor (laws) 
 import Spec.Annotation.Internal
+
+import qualified Data.Annotation.AnnotationLaws as AnnotationLaws
 
 ----------------------------------------------------------------------------------
 
@@ -28,5 +28,5 @@ spec =
 annotationLaws :: TestTree
 annotationLaws = testGroup "Annotation Laws"
     [
-      testProperties "Functor Laws" $ Functor.laws @Annotation @Temperature @Temperature @Temperature
+      testProperties "Annotation Laws" $ AnnotationLaws.laws @Temperature @Temperature @Temperature
     ]

@@ -4,7 +4,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
-module Laws.Functor (laws) where
+module Laws.Functor (Constraints, laws) where
 
 import Test.QuickCheck hiding ((===))
 import Text.Show.Functions ()

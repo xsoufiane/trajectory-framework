@@ -30,6 +30,7 @@ library:
   source-dirs: src
   exposed-modules:
   - Data.Annotation.Annotation
+  - Data.Annotation.AnnotationLaws
   - Data.Annotation.Context
   - Data.Annotation.SemanticAnnotation
   - Data.Annotation.SemanticAnnotationLaws
