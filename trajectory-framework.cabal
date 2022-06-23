@@ -31,6 +31,7 @@ library
       Data.Annotation.SemanticAnnotation
       Data.Annotation.SemanticAnnotationLaws
       Laws.Functor
+      Laws.Monad
   other-modules:
       Data.Episode.EpisodeAlgebra
       Data.Episode.Internal

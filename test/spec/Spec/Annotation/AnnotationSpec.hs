@@ -28,5 +28,5 @@ spec =
 annotationLaws :: TestTree
 annotationLaws = testGroup "Annotation Laws"
     [
-      testProperties "Annotation Laws" $ AnnotationLaws.laws @Temperature @Temperature @Temperature
+      testProperties "Annotation Laws" $ AnnotationLaws.laws @Temperature @Temperature @Temperature @Temperature
     ]

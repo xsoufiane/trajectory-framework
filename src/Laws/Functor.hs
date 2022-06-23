@@ -16,13 +16,9 @@ type Constraints f x y z =
      (
        Functor f
      , Arbitrary (f x)
-     , Arbitrary x
-     , Arbitrary y
-     , Arbitrary z
-     , CoArbitrary x
-     , CoArbitrary y
-     , Eq (f x)
-     , Eq (f z)
+     , Arbitrary x, Arbitrary y, Arbitrary z
+     , CoArbitrary x, CoArbitrary y
+     , Eq (f x), Eq (f z)
      , Show (f x)
      )
 

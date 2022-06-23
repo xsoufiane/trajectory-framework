@@ -35,6 +35,7 @@ library:
   - Data.Annotation.SemanticAnnotation
   - Data.Annotation.SemanticAnnotationLaws
   - Laws.Functor
+  - Laws.Monad
 
 tests:
   trajectory-framework-spec:
