@@ -7,10 +7,11 @@
 
 module Spec.Annotation.Internal (Temperature) where
 
-import Test.Tasty.QuickCheck  
-  
 import Data.Annotation.Annotation
 import Prelude hiding ((<$>), return)
+import Test.Tasty.QuickCheck
+
+import qualified Control.Comonad as Comonad
 
 -------------------------------------------------
 
@@ -27,11 +28,9 @@ instance AnnotationAlgebra a where
     
     -- | Observations
     extract (Annotation a) = a
+    f =>= g = g . return . f
 
 -- | Spec Instances
-instance Eq y => Eq (x -> y) where
-    f == g = undefined
-    
 instance Eq a => Eq (Annotation a) where
     (Annotation x) == Annotation y = x == y    
     
@@ -45,5 +44,12 @@ instance Applicative Annotation where
 instance Monad Annotation where
     (Annotation a) >>= f = f a
     
+instance Comonad.Comonad Annotation where
+    extract (Annotation a) = a
+    duplicate = return
+    
 instance Arbitrary a => Arbitrary (Annotation a) where
-     arbitrary = fmap Annotation arbitrary   
+     arbitrary = fmap Annotation arbitrary
+
+instance CoArbitrary a => CoArbitrary (Annotation a) where
+     coarbitrary = coarbitrary . extract 

@@ -13,6 +13,7 @@ module Data.Annotation.Annotation
    
      -- * Observations
    , extract
+   , (=>=)
    ) where
 
 import Prelude hiding ((<$>), return)
@@ -30,3 +31,4 @@ class AnnotationAlgebra a where
     
     -- | Observations
     extract :: Annotation a -> a
+    (=>=) :: (Annotation a -> b) -> (Annotation b -> c) -> (Annotation a -> c)

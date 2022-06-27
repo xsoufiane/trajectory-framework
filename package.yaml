@@ -25,6 +25,7 @@ dependencies:
 - time-framework
 - tasty
 - QuickCheck
+- comonad
 
 library:
   source-dirs: src
@@ -36,6 +37,7 @@ library:
   - Data.Annotation.SemanticAnnotationLaws
   - Laws.Functor
   - Laws.Monad
+  - Laws.Comonad
 
 tests:
   trajectory-framework-spec:

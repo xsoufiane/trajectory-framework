@@ -4,9 +4,9 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
-module Laws.Monad (Constraints, laws) where
+module Laws.Comonad (Constraints, laws) where
 
-import Control.Monad
+import Control.Comonad
 import Test.QuickCheck hiding ((===))
 import Text.Show.Functions ()
 
@@ -15,24 +15,24 @@ import Text.Show.Functions ()
 -- | Constraints
 type Constraints m x y z w =
      (
-       Monad m
-     , Arbitrary (m y), Arbitrary (m z), Arbitrary (m w)
-     , Arbitrary x
-     , CoArbitrary x, CoArbitrary y, CoArbitrary z
-     , Eq (m y), Eq (m w)
-     , Show x
+       Comonad m
+     , Arbitrary y, Arbitrary z, Arbitrary w
+     , Arbitrary (m x)
+     , CoArbitrary (m x), CoArbitrary (m y), CoArbitrary (m z)
+     , Eq y, Eq w
+     , Show (m x)
      )
 
 -- | Properties
 prop_left_identity :: forall m x y z w. Constraints m x y z w => Property
-prop_left_identity = property (\(f :: x -> m y) x -> (return >=> f) x == f x)
+prop_left_identity = property (\(f :: m x -> y) x -> (extract =>= f) x == f x)
 
 prop_right_identity :: forall m x y z w. Constraints m x y z w => Property
-prop_right_identity = property (\(f :: x -> m y) x -> (f >=> return) x == f x)
+prop_right_identity = property (\(f :: m x -> y) x -> (f =>= extract) x == f x)
 
 prop_associativity :: forall m x y z w. Constraints m x y z w => Property
 prop_associativity = 
-    property (\(f :: x -> m y, g :: y -> m z, h :: z -> m w) x -> ((f >=> g) >=> h) x == (f >=> (g >=> h)) x)
+    property (\(f :: m x -> y, g :: m y -> z, h :: m z -> w) x -> ((f =>= g) =>= h) x == (f =>= (g =>= h)) x)
 
 -- | Laws
 laws :: forall m x y z w. Constraints m x y z w => [(String, Property)]
