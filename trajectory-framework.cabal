@@ -33,6 +33,8 @@ library
       Laws.Functor
       Laws.Monad
       Laws.Comonad
+      Structure.Isomorphism
+      Structure.Isomorphism.Laws
   other-modules:
       Data.Episode.EpisodeAlgebra
       Data.Episode.Internal

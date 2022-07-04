@@ -38,6 +38,8 @@ library:
   - Laws.Functor
   - Laws.Monad
   - Laws.Comonad
+  - Structure.Isomorphism
+  - Structure.Isomorphism.Laws
 
 tests:
   trajectory-framework-spec:

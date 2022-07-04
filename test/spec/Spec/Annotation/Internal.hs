@@ -10,6 +10,7 @@ module Spec.Annotation.Internal (Temperature) where
 import Data.Annotation.Annotation
 import Prelude hiding ((<$>), return)
 import Test.Tasty.QuickCheck
+import Structure.Isomorphism
 
 import qualified Control.Comonad as Comonad
 
@@ -47,6 +48,10 @@ instance Monad Annotation where
 instance Comonad.Comonad Annotation where
     extract (Annotation a) = a
     duplicate = return
+    
+instance Isomorphism a (Annotation a) where
+    f = return
+    g = extract
     
 instance Arbitrary a => Arbitrary (Annotation a) where
      arbitrary = fmap Annotation arbitrary

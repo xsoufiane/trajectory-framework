@@ -31,4 +31,5 @@ annotationLaws = testGroup "Annotation Laws"
       testProperties "Functor" $ AnnotationLaws.functorLaws @Temperature @Temperature @Temperature
     , testProperties "Monad" $ AnnotationLaws.monadLaws @Temperature @Temperature @Temperature @Temperature
     , testProperties "Comonad" $ AnnotationLaws.comonadLaws @Temperature @Temperature @Temperature @Temperature
+    , testProperties "Isomorphism" $ AnnotationLaws.isomorphismLaws @Temperature
     ]
