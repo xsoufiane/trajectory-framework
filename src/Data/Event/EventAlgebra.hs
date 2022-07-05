@@ -25,7 +25,7 @@ import Data.HList
 import Data.Kind (Type)
 import Data.Time (Time)
 import Prelude hiding ((<))
-import Relation.Identity (Identity)
+import Structure.Identity (Identity)
 
 import Data.Internal (HObservable)
 

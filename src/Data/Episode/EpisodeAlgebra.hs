@@ -23,7 +23,7 @@ module Data.Episode.EpisodeAlgebra
 import Data.HList (HList)
 import Data.Kind (Type)
 import Prelude hiding (filter, head, tail)
-import Relation.Identity (Identity)
+import Structure.Identity (Identity)
 
 import Data.Episode.Internal (HAnnotation)
 import Data.Event.EventAlgebra (Event)

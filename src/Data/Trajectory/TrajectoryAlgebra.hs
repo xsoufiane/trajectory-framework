@@ -21,7 +21,7 @@ module Data.Trajectory.TrajectoryAlgebra
 
 import Data.HList (HList)
 import Prelude hiding (filter, head, tail)
-import Relation.Identity (Identity)
+import Structure.Identity (Identity)
 
 import Data.Event.EventAlgebra (Event)
 import Data.Episode.EpisodeAlgebra (Episode, EpisodeAlgebra)

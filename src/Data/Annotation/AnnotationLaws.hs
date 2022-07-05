@@ -37,9 +37,9 @@ laws :: forall x y z w.
       Functor.Constraints Annotation x y z
     , Monad.Constraints Annotation x y z w
     , Comonad.Constraints Annotation x y z w
-    , Isomorphism.Constraints x (Annotation x) 
+    , Isomorphism.Constraints x (Annotation x)
     ) => [(String, Property)]
-laws = functorLaws @x @y @z 
-     ++ monadLaws @x @y @z @w 
-     ++ comonadLaws @x @y @z @w 
+laws = functorLaws @x @y @z
+     ++ monadLaws @x @y @z @w
+     ++ comonadLaws @x @y @z @w
      ++ isomorphismLaws @x

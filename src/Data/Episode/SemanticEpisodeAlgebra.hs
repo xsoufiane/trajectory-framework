@@ -24,7 +24,7 @@ module Data.Episode.SemanticEpisodeAlgebra
 
 import Data.HList (HList)  
 import Data.Kind (Type)
-import Relation.Identity (Identity)
+import Structure.Identity (Identity)
 
 import Data.Episode.EpisodeAlgebra (Episode)
 import Data.Event.EventAlgebra (Event)

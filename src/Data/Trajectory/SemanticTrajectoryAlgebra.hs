@@ -23,7 +23,7 @@ module Data.Trajectory.SemanticTrajectoryAlgebra
 import Data.HList (HList)
 import Data.Kind (Type)
 import Prelude hiding (filter, head, tail)
-import Relation.Identity (Identity)
+import Structure.Identity (Identity)
 
 import Data.Event.EventAlgebra (Event)
 import Data.Event.SemanticEventAlgebra (SemanticEvent)

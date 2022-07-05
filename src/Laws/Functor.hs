@@ -24,7 +24,7 @@ type Constraints f x y z =
 
 -- | Properties
 prop_identity :: forall f x y z. Constraints f x y z => Property
-prop_identity = property (\(fx :: f x) -> fmap id fx == fx)
+prop_identity = property (\(fx :: f x) -> fmap id id fx == fx)
 
 prop_composition :: forall f x y z. Constraints f x y z => Property
 prop_composition = property (\(h :: x -> y) (g :: y -> z) (fx :: f x) -> fmap (g . h) fx == ((fmap g) . (fmap h)) fx)
