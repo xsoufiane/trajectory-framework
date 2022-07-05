@@ -31,7 +31,7 @@ comonadLaws = Comonad.laws @Annotation @x @y @z @w
 isomorphismLaws :: forall x. Isomorphism.Constraints x (Annotation x) => [(String, Property)]
 isomorphismLaws = Isomorphism.laws @x @(Annotation x)
 
--- | Laws
+-- | All the laws
 laws :: forall x y z w. 
     (
       Functor.Constraints Annotation x y z
