@@ -11,7 +11,7 @@ module Spec.Annotation.SemanticAnnotationSpec (spec) where
 import Test.Tasty
 import Test.Tasty.QuickCheck
 
-import Data.Annotation.Annotation
+import Data.Annotation.Annotation (AnnotationAlgebra)
 import Data.Annotation.Context (Context)
 import Data.Annotation.SemanticAnnotation
 import Data.Annotation.SemanticAnnotationLaws as SemanticAnnotation
@@ -36,7 +36,6 @@ instance (AnnotationAlgebra a, Context c) => SemanticAnnotationAlgebra a c where
         SemanticAnnotation (Annotation a) c deriving (Eq, Show)
         
     construct = SemanticAnnotation
-    bimap f g (SemanticAnnotation a c) = SemanticAnnotation (f a) (g c)
     
     annotation (SemanticAnnotation a _) = a
     context (SemanticAnnotation _ c) = c
