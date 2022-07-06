@@ -4,27 +4,20 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
-module Data.Annotation.SemanticAnnotationLaws (laws) where
+module Data.Annotation.SemanticAnnotationLaws (bifunctorLaws, laws) where
 
 import Test.QuickCheck hiding ((===))
 
 import Data.Annotation.SemanticAnnotation
 
+import qualified Laws.Bifunctor as Bifunctor
+
 ----------------------------------------------------------
 
--- | Constraints
-type Constraints a c =
-     (
-       Arbitrary (SemanticAnnotation a c)
-     , Eq (SemanticAnnotation a c)
-     , SemanticAnnotationAlgebra a c
-     , Show (SemanticAnnotation a c)
-     )
-
--- | Properties
-prop_construct :: forall a c. Constraints a c => Property
-prop_construct = property (\(x :: SemanticAnnotation a c) -> x == construct (annotation x) (context x))
+-- | Laws
+bifunctorLaws :: forall x x' y y' z z'.  Bifunctor.Constraints SemanticAnnotation x x' y y' z z' => [(String, Property)]
+bifunctorLaws = Bifunctor.laws @SemanticAnnotation @x @x' @y @y' @z @z'
 
 -- | Laws
-laws :: forall a c. Constraints a c => [(String, Property)]
-laws = [ ("Construct", prop_construct @a @c) ]
+laws :: forall x x' y y' z z'. Bifunctor.Constraints SemanticAnnotation x x' y y' z z' => [(String, Property)]
+laws = bifunctorLaws @x @x' @y @y' @z @z'

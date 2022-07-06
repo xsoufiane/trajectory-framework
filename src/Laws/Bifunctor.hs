@@ -13,7 +13,7 @@ import Text.Show.Functions ()
 ---------------------------------------------------
 
 -- | Constraints
-type Constraints p x x' y y' z z'=
+type Constraints p x x' y y' z z' =
      (
        Bifunctor p
      , Arbitrary (p x x')

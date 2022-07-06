@@ -14,27 +14,35 @@ import Test.Tasty.QuickCheck
 import Data.Annotation.Annotation
 import Data.Annotation.Context (Context)
 import Data.Annotation.SemanticAnnotation
-import Data.Annotation.SemanticAnnotationLaws as SemanticAnnotation (laws)
+import Data.Annotation.SemanticAnnotationLaws as SemanticAnnotation
 import Spec.Annotation.Internal
 
-import Prelude hiding (return)
+import qualified Data.Bifunctor as Data
 
 ----------------------------------------------------------------------------------
 
 -- | Algebra Encoding
-data Weather = Warm | Cold deriving (Eq, Show)
+data Weather = Warm | Cold deriving (Bounded, Enum, Eq, Show)
 instance Context Weather
-instance Arbitrary Weather where
-    arbitrary = elements [Warm, Cold]
 
-instance SemanticAnnotationAlgebra Temperature Weather where
-    data SemanticAnnotation Temperature Weather =
-        SemanticAnnotation (Annotation Temperature) Weather deriving (Eq, Show)
+instance Arbitrary Weather where
+    arbitrary = arbitraryBoundedEnum
+    
+instance CoArbitrary Weather where
+    coarbitrary = coarbitraryEnum
+
+instance (AnnotationAlgebra a, Context c) => SemanticAnnotationAlgebra a c where
+    data SemanticAnnotation a c =
+        SemanticAnnotation (Annotation a) c deriving (Eq, Show)
         
     construct = SemanticAnnotation
+    bimap f g (SemanticAnnotation a c) = SemanticAnnotation (f a) (g c)
     
     annotation (SemanticAnnotation a _) = a
     context (SemanticAnnotation _ c) = c
+        
+instance Data.Bifunctor SemanticAnnotation where
+    bimap f g (SemanticAnnotation (Annotation a) c) = SemanticAnnotation (Annotation $ f a) (g c)
 
 instance Arbitrary (SemanticAnnotation Temperature Weather) where
     arbitrary = applyArbitrary2 SemanticAnnotation
@@ -50,5 +58,6 @@ spec =
 semanticAnnotationLaws :: TestTree
 semanticAnnotationLaws = testGroup "Semantic Annotation Laws"
     [
-      testProperties "Semantic Annotation Laws" $ SemanticAnnotation.laws @Temperature @Weather
+      testProperties "Bifunctor laws" 
+            $ SemanticAnnotation.bifunctorLaws @Temperature @Weather @Temperature @Weather @Temperature @Weather
     ]

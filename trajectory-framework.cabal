@@ -31,6 +31,7 @@ library
       Data.Annotation.SemanticAnnotation
       Data.Annotation.SemanticAnnotationLaws
       Laws.Functor
+      Laws.Bifunctor
       Laws.Monad
       Laws.Comonad
       Structure.Isomorphism
@@ -53,7 +54,6 @@ library
       Data.Trajectory.Tensor
       Data.Trajectory.TrajectoryAlgebra
       Data.TrajectoryLike
-      Laws.Bifunctor
       Paths_trajectory_framework
   hs-source-dirs:
       src

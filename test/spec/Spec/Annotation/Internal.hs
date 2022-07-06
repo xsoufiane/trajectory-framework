@@ -5,7 +5,7 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Spec.Annotation.Internal (Temperature) where
+module Spec.Annotation.Internal where
 
 import Data.Annotation.Annotation
 import Prelude hiding ((<$>), return)
