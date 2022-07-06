@@ -9,7 +9,7 @@ module Data.Episode.Internal (HAnnotation) where
   
 import Data.Kind (Type) 
 
-import Data.Annotation.Annotation (Annotation)
+import Data.Annotation.AnnotationAlgebra (Annotation)
 
 -----------------------------------------------------------------
 

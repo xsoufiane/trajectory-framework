@@ -9,7 +9,7 @@ module Data.Internal (HObservable, HSemanticAnnotation, NotEmpty) where
 
 import Data.Kind (Type)
 
-import Data.Annotation.SemanticAnnotation (SemanticAnnotation)
+import Data.Annotation.SemanticAnnotationAlgebra (SemanticAnnotation)
 import Data.Observable (Observable)
 
 --------------------------------------------------

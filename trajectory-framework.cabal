@@ -25,10 +25,10 @@ source-repository head
 
 library
   exposed-modules:
-      Data.Annotation.Annotation
+      Data.Annotation.AnnotationAlgebra
       Data.Annotation.AnnotationLaws
       Data.Annotation.Context
-      Data.Annotation.SemanticAnnotation
+      Data.Annotation.SemanticAnnotationAlgebra
       Data.Annotation.SemanticAnnotationLaws
       Laws.Functor
       Laws.Bifunctor

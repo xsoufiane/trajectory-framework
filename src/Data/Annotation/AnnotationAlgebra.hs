@@ -1,6 +1,6 @@
 {-# LANGUAGE TypeFamilies #-}
 
-module Data.Annotation.Annotation 
+module Data.Annotation.AnnotationAlgebra 
    (
      -- * Types
      Annotation

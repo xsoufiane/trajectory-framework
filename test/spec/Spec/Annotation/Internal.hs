@@ -7,7 +7,7 @@
 
 module Spec.Annotation.Internal where
 
-import Data.Annotation.Annotation
+import Data.Annotation.AnnotationAlgebra
 import Prelude hiding ((<$>), return)
 import Test.Tasty.QuickCheck
 import Structure.Isomorphism

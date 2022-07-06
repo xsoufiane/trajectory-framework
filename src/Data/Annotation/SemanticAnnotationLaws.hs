@@ -8,7 +8,7 @@ module Data.Annotation.SemanticAnnotationLaws (bifunctorLaws, laws) where
 
 import Test.QuickCheck hiding ((===))
 
-import Data.Annotation.SemanticAnnotation
+import Data.Annotation.SemanticAnnotationAlgebra
 
 import qualified Laws.Bifunctor as Bifunctor
 

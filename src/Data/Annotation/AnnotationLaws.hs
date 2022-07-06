@@ -9,7 +9,7 @@ module Data.Annotation.AnnotationLaws (functorLaws, monadLaws, comonadLaws, isom
 import Prelude hiding (return)
 import Test.QuickCheck hiding ((===))
 
-import Data.Annotation.Annotation
+import Data.Annotation.AnnotationAlgebra
 
 import qualified Laws.Functor as Functor
 import qualified Laws.Monad as Monad
